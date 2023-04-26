@@ -16,15 +16,11 @@ public class StatisticsService {
         return frequencyHashmap;
     }
 
-    public void addNewRequest(String name){
-        if(frequencyHashmap.containsKey(name)){
-            frequencyHashmap.replace(name, frequencyHashmap.get(name)+1);
-        } else{
+    public void addNewRequest(String name) {
+        if (frequencyHashmap.containsKey(name)) {
+            frequencyHashmap.replace(name, frequencyHashmap.get(name) + 1);
+        } else {
             frequencyHashmap.put(name, 1);
         }
-    }
-
-    public Integer getRequestNumber(String name){
-        return frequencyHashmap.getOrDefault(name, 0);
     }
 }

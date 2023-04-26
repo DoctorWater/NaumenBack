@@ -26,24 +26,4 @@ public class StatisticsController {
     public HashMap<String, Integer> getFrequencyMap(){
         return statisticsService.getFrequencyHashmap();
     }
-
-    @GetMapping(value = "/highest-age")
-    public String getOldest(){
-        Comparator<Integer> comparator = (integer, t1) -> {
-            if (integer < t1)
-                return -1;
-            if (integer.equals(t1))
-                return 0;
-            return 1;
-        };
-        Optional<Integer> highestAge = statisticsService.getFrequencyHashmap().values().stream().max(comparator);
-        if(highestAge.isPresent()){
-            for(Map.Entry<String, Integer> entry: statisticsService.getFrequencyHashmap().entrySet()){
-                if(entry.getValue().equals(highestAge.get())){
-                    return entry.getKey();
-                }
-            }
-        }
-        return "No names registered";
-    }
 }

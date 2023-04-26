@@ -1,6 +1,5 @@
 package ru.malkov.naumentesttask.Services;
 
-import org.springframework.stereotype.Service;
 import ru.malkov.naumentesttask.Entities.Person;
 import ru.malkov.naumentesttask.Exceptions.DaoCreationException;
 import ru.malkov.naumentesttask.Exceptions.NoSuchNameWasFoundException;
@@ -15,14 +14,28 @@ import java.util.Scanner;
 
 public class FileDao implements DAO {
     private final String filename;
-    private List<Person> people;
+    private final List<Person> people;
 
     public FileDao(String filename) throws DaoCreationException {
         this.filename = filename;
-        this.people = getAllPeople();
+        this.people = initiateDataList();
     }
 
-    private List<Person> getAllPeople() throws DaoCreationException {
+    public List<Person> getAllPeople(){
+        return people;
+    }
+
+    @Override
+    public Person getPersonByName(String nameReq) throws NoSuchNameWasFoundException {
+        Optional<Person> result = people.stream().filter(x -> x.getName().equals(nameReq)).findFirst();
+        if (result.isPresent()) {
+            return result.get();
+        } else {
+            throw new NoSuchNameWasFoundException();
+        }
+    }
+
+    private List<Person> initiateDataList() throws DaoCreationException {
         try {
             Scanner scanner = new Scanner(new File(filename));
             List<Person> result = new ArrayList<>();
@@ -35,16 +48,6 @@ public class FileDao implements DAO {
             return result;
         } catch (FileNotFoundException | NumberFormatException e) {
             throw new DaoCreationException(e);
-        }
-    }
-
-    @Override
-    public Person getPersonByName(String nameReq) throws NoSuchNameWasFoundException {
-        Optional<Person> result = people.stream().filter(x -> x.name().equals(nameReq)).findFirst();
-        if (result.isPresent()) {
-            return result.get();
-        } else {
-            throw new NoSuchNameWasFoundException();
         }
     }
 }

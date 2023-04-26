@@ -1,4 +1,12 @@
 package ru.malkov.naumentesttask.Entities;
 
-public record Person(String name, Integer age) {
+import lombok.*;
+import org.springframework.stereotype.Component;
+
+@AllArgsConstructor
+@Getter
+@EqualsAndHashCode
+public class Person {
+    private String name;
+    private Integer age;
 }
